@@ -1,0 +1,72 @@
+HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>精訊聯合會計師事務所台中所公司繳費查詢</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; }
+        .container { width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>精訊聯合會計師事務所台中所<br>公司繳費查詢</h1>
+    <img src="your-image.jpg" alt="公司圖片" width="600">
+    <div class="container">
+        <label for="companyId">統一編號：</label>
+        <input type="text" id="companyId" name="companyId"><br><br>
+        <button onclick="queryPayment()">查詢</button><br><br>
+        <div id="paymentDetails"></div>
+        <div>
+            <label for="paymentTime">繳費時間:</label>
+            <input type="datetime-local" id="paymentTime">
+            <button onclick="updatePaymentTime()">更新繳費時間</button>
+        </div>
+    </div>
+
+    <script>
+        function queryPayment() {
+            const companyId = document.getElementById('companyId').value;
+            const csvUrl = ' https://docs.google.com/spreadsheets/d/e/2PACX-1vSqgZ4QJjJlIeB8RiuR3U-okasnZwUWUN0MrBX9pGwa4BKExGBplFfcvOQhhEssBR5WpE5tLcLIozw7/pub?output=csv'; // 將YOUR_GOOGLE_SHEET_CSV_URL替換為你的google sheet發佈後的csv網址。
+            fetch(csvUrl)
+                .then(response => response.text())
+                .then(csv => {
+                    const rows = csv.split('\n');
+                    const headers = rows[0].split(',');
+                    for (let i = 1; i < rows.length; i++) {
+                        const values = rows[i].split(',');
+                        if (values[0] === companyId) {
+                            document.getElementById('paymentDetails').innerHTML = `
+                                <p>應繳費用項目：${values[1]}</p>
+                                <p>應繳費用金額：${values[2]}</p>
+                                <p>匯入帳戶：${values[3]}</p>
+                            `;
+                            return;
+                        }
+                    }
+                    document.getElementById('paymentDetails').innerText = '查無資料';
+                });
+        }
+
+        function updatePaymentTime() {
+            const companyId = document.getElementById('companyId').value;
+            const paymentTime = document.getElementById('paymentTime').value;
+            const scriptUrl = ' https://script.google.com/macros/s/AKfycbwWLNTvkcqg2DfzfHnDlPU27eg7k26DuLq7_JdYWo_MQHuDrBfn4Cj6NhAN8Tb9WcxJ/exec '; // 將YOUR_APPS_SCRIPT_URL替換為你的Apps Script網址
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `companyId=${companyId}&paymentTime=${paymentTime}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // 顯示 Apps Script 回傳的訊息
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
