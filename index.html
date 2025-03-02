@@ -40,10 +40,10 @@
                     for (let i = 1; i < rows.length; i++) {
                         const values = rows[i].split(',');
                         if (values[0] === companyId) {
-                            let detailsHTML = `<div class="item-row"><div class="item-content">應繳費用項目：${values[1]}</div><br><div class="item-amount">${values[2]}</div></div><br>`;
+                            let detailsHTML = `<div class="item-row"><div class="item-content">應繳費用項目：${values[1]}</div><div class="item-amount">${values[2]}</div></div><br>`;
                             for (let j = 3; j < Math.min(values.length, 43); j += 2) {
                                 if (values[j] && values[j + 1]) {
-                                    detailsHTML += `<div class="item-row"><div class="item-content">${values[j]}</div><br><div class="item-amount">${values[j + 1]}</div></div><br>`;
+                                    detailsHTML += `<div class="item-row"><div class="item-content">${values[j]}</div><div class="item-amount">${values[j + 1]}</div></div><br>`;
                                 }
                             }
                             document.getElementById('paymentDetails').innerHTML = detailsHTML;
