@@ -31,7 +31,7 @@
     <script>
         function queryPayment() {
             const companyId = document.getElementById('companyId').value;
-            const csvUrl = ' https://docs.google.com/spreadsheets/d/e/2PACX-1vSqgZ4QJjJlIeB8RiuR3U-okasnZwUWUN0MrBX9pGwa4BKExGBplFfcvOQhhEssBR5WpE5tLcLIozw7/pubhtml';
+            const csvUrl = ' https://docs.google.com/spreadsheets/d/e/2PACX-1vSqgZ4QJjJlIeB8RiuR3U-okasnZwUWUN0MrBX9pGwa4BKExGBplFfcvOQhhEssBR5WpE5tLcLIozw7/pub?output=csv';
             fetch(csvUrl)
                 .then(response => response.text())
                 .then(csv => {
